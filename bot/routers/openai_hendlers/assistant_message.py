@@ -9,6 +9,7 @@ from aiogram.types import Message, FSInputFile
 from openai_tool.tts_tool import text_in_voice
 from openai_tool.assistant_tool import get_answer_from_assistant
 from openai_tool.whisper_tool import voice_to_text
+from config import settings
 
 router = Router()
 logger = logging.getLogger('voice_router')
@@ -29,9 +30,8 @@ async def voice_handler(message: Message, state: FSMContext):
     logger.debug(f"converting from sound to text: {text}")
 
     tread_id = (await state.get_data())['tread_id']
-    assistant_id = (await state.get_data())['assistant_id']
 
-    answer = await get_answer_from_assistant(text, message.chat.id, tread_id, assistant_id)
+    answer = await get_answer_from_assistant(text, message.chat.id, tread_id, settings.ASSISTANT_ID)
     logger.debug(f"response from the assistant: {answer}")
 
     await text_in_voice(answer, file_name)
@@ -42,3 +42,14 @@ async def voice_handler(message: Message, state: FSMContext):
 
     logger.debug(f"send voice to user")
     os.remove(file_name)
+
+
+@router.message(F.text)
+async def text_message_handler(message: Message, state: FSMContext):
+
+    tread_id = (await state.get_data())['tread_id']
+
+    answer = await get_answer_from_assistant(message.text, message.chat.id, tread_id, settings.ASSISTANT_ID)
+    logger.debug(f"response from the assistant: {answer}")
+
+    await message.answer(text=answer)

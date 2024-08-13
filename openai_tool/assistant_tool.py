@@ -1,4 +1,4 @@
-from config import client
+from config import client, settings
 
 
 async def get_answer_from_assistant(question: str, chat_id: int, tread_id: str, assistant_id: str) -> str:

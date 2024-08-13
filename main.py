@@ -2,7 +2,6 @@ import asyncio
 import logging
 
 from aiogram import Dispatcher, Bot
-from aiogram.types import BotCommand
 from aiogram.fsm.storage.redis import RedisStorage
 
 from config import settings
