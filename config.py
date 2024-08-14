@@ -1,4 +1,5 @@
 from openai import AsyncOpenAI
+from aiogram import Bot
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,5 +13,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+bot = Bot(settings.API_TOKEN_TELEGRAM)
 
 client = AsyncOpenAI(api_key=settings.API_TOKEN_OPENAI)

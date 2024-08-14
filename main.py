@@ -4,7 +4,7 @@ import logging
 from aiogram import Dispatcher, Bot
 from aiogram.fsm.storage.redis import RedisStorage
 
-from config import settings
+from config import settings, bot
 from bot.routers import router as main_router
 
 
@@ -17,7 +17,7 @@ async def main() -> None:
 
     storage = RedisStorage.from_url(settings.REDIS_URL)
 
-    bot = Bot(settings.API_TOKEN_TELEGRAM)
+
     dp = Dispatcher(storage=storage)
 
     dp.include_router(main_router)
